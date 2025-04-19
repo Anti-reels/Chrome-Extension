@@ -1,0 +1,15 @@
+{
+    "name": "Stop Instagram Reels",
+    "description": "Toggles on & off instagram reels",
+    "version": "1.0",
+    "manifest_version": 3,
+    "action": {
+      "default_popup": "controls.html"
+    },
+    "background": {
+      "service_worker": "service-worker.js"
+    },
+    "permissions": [
+      "proxy"
+    ]
+}
