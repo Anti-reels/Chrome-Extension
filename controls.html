@@ -4,9 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="popup.css">
 </head>
-<body>
-    <input type="checkbox" id="checkbox1" name="checkbox1"> Toggle blocking
+<div class="toggle-container">
+    <div class="toggle-row">
+      <span class="toggle-label">Show Reels</span>
+      <label class="switch">
+        <input type="checkbox" id="checkbox1">
+        <span class="slider"></span>
+      </label>
+    </div>
+        <div class="indicator">
+          <span>Works on</span>
+          <img src="images/instagram.png" alt="Instagram" title="Instagram">
+          <img src="images/tiktok.webp" alt="TikTok" title="TikTok">
+          <img src="images/facebook.webp" alt="Facebook" title="Facebook">
+        </div>
+      </div>
+    
     <script src="settings.js"></script>
 </body>
 </html>
