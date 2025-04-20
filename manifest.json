@@ -10,6 +10,7 @@
       "service_worker": "service-worker.js"
     },
     "permissions": [
-      "proxy"
+      "proxy",
+      "storage"
     ]
 }
