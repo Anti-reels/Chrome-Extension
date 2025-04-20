@@ -1,6 +1,6 @@
 {
-    "name": "Stop Instagram Reels",
-    "description": "Toggles on & off instagram reels",
+    "name": "Stop Reels",
+    "description": "Toggles on & off social media reels without removing other app functionalities.",
     "version": "1.0",
     "manifest_version": 3,
     "action": {
