@@ -1,4 +1,10 @@
 {
+    "icons": {
+      "16": "icon16.png",
+      "32": "icon32.png",
+      "48": "icon48.png",
+      "128": "icon 128x128.png"
+    },
     "name": "Stop Reels",
     "description": "Toggles on & off social media reels without removing other app functionalities.",
     "version": "1.0",

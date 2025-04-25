@@ -1,5 +1,5 @@
 const block_script = "function FindProxyForURL(url, host) {\n" +
-            "  if (host.includes('fbcdn.net') || host.includes('prime.tiktok.com'))\n" +
+            "  if (host.includes('fbcdn.net') || host.includes('prime.tiktok.com') || host.includes('googlevideo.com'))\n" +
             "    return 'PROXY blackhole:80';\n" +
             "  return 'DIRECT';\n" +
             "}";
