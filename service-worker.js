@@ -1,45 +1,34 @@
-const block_script = (is_youtube) => {
-    return "function FindProxyForURL(url, host) {\n" +
-            "  if (host.includes('fbcdn.net') || host.includes('prime.tiktok.com')"
-            + (is_youtube ? " || host.includes('googlevideo.com')" : "") +
-            "){\n" +
-            "    return 'PROXY blackhole:80';}\n" +
-            "  return 'DIRECT';\n" +
-            "}";
-};
-const only_block_ytb = "function FindProxyForURL(url, host) {\n" +
-            "  if (host.includes('googlevideo.com')) {" +
-            "    return 'PROXY blackhole:80';}\n" +
-            "  return 'DIRECT';\n" +
-            "}";
+const block_script = (is_meta, is_youtube, is_also_blocking_x) => 
+    "function FindProxyForURL(url, host) {" +
+            "if (false" + (is_meta || is_youtube || is_also_blocking_x ? " || " : "")
+            + (is_meta ? "host.includes('fbcdn.net') || host.includes('prime.tiktok.com')" : "")
+            + (is_youtube ? (is_meta ? " || " : "") + "host.includes('googlevideo.com')" : "")
+            + (is_also_blocking_x ? (is_youtube || is_meta ? " || " : "") + "host.includes('twimg.com')" : "") + "){return'PROXY blackhole:80';}return'DIRECT';}";
 
-const allow_script = "function FindProxyForURL(url, host) {\n" +
-            "  return 'DIRECT';\n" +
-            "}";
-
-const getConfig = (is_blocking, is_also_blocking_youtube) => {
+const getConfig = (is_blocking, is_also_blocking_youtube, is_also_blocking_x) => {
     return {
         mode: "pac_script",
-        pacScript: { data: is_blocking ? block_script(is_also_blocking_youtube) : !is_blocking && is_also_blocking_youtube ? only_block_ytb : allow_script }
+        pacScript: { data: block_script(is_blocking, is_also_blocking_youtube, is_also_blocking_x) }
     };
 };
 
-const update_is_blocking = async (is_blocking, is_also_blocking_youtube) => {
-    if (is_blocking == undefined) is_blocking = await getOldValue(true, false);
-    if (is_also_blocking_youtube == undefined) is_also_blocking_youtube = await getOldValue(false, true);
+const update_is_blocking = async (is_blocking, is_also_blocking_youtube, is_also_blocking_x) => {
+    if (is_blocking == undefined) is_blocking = await getOldValue(true, false, false);
+    if (is_also_blocking_youtube == undefined) is_also_blocking_youtube = await getOldValue(false, true, false);
+    if (is_also_blocking_x == undefined) is_also_blocking_x = await getOldValue(false, false, true);
     
-    console.log(getConfig(is_blocking, is_also_blocking_youtube).pacScript.data);
+    console.log(getConfig(is_blocking, is_also_blocking_youtube, is_also_blocking_x).pacScript.data);
     
 
     chrome.proxy.settings.set(
-        { value: getConfig(is_blocking, is_also_blocking_youtube), scope: 'regular' },
+        { value: getConfig(is_blocking, is_also_blocking_youtube, is_also_blocking_x), scope: 'regular' },
         function() {}
     );
 
-    console.log("Updated " + is_blocking + " and " + is_also_blocking_youtube);
+    console.log("Updated " + is_blocking + " and " + is_also_blocking_youtube + " and " + is_also_blocking_x);
 }
 
-const getOldValue = async (is_blocking, is_also_blocking_youtube) => {
+const getOldValue = async (is_blocking, is_also_blocking_youtube, is_also_blocking_x) => {
     if (is_blocking) {
         const result = await chrome.storage.local.get(["is_blocking"]);
         if (result) return result.is_blocking;
@@ -58,22 +47,35 @@ const getOldValue = async (is_blocking, is_also_blocking_youtube) => {
         }
     }
 
+    if (is_also_blocking_x) {
+        const result = await chrome.storage.local.get(["is_also_blocking_x"]);
+        if (result) return result.is_also_blocking_x;
+        else {
+            await chrome.storage.local.set({ is_also_blocking_x: false });
+            return false;
+        }
+    }
+
     return null;
 }
 
-chrome.storage.local.get(["is_blocking", "is_also_blocking_youtube"]).then((result) => {
-    if (result) update_is_blocking(result.is_blocking, result.is_also_blocking_youtube);
+chrome.storage.local.get(["is_blocking", "is_also_blocking_youtube", "is_also_blocking_x"]).then((result) => {
+    if (result.is_blocking != undefined && result.is_also_blocking_youtube != undefined && result.is_also_blocking_x != undefined) update_is_blocking(result.is_blocking, result.is_also_blocking_youtube, result.is_also_blocking_x);
     else {
-        chrome.storage.local.set({ is_blocking: true, is_also_blocking_youtube: false });
-        update_is_blocking(true, false);
+        chrome.storage.local.set({ is_blocking: true, is_also_blocking_youtube: false, is_also_blocking_x: false });
+        update_is_blocking(true, false, false);
     }
 });
 chrome.storage.onChanged.addListener((changes) => {
     if (changes.is_blocking) {
-        update_is_blocking(changes.is_blocking.newValue, undefined);
+        update_is_blocking(changes.is_blocking.newValue, undefined, undefined);
     }
 
     if (changes.is_also_blocking_youtube) {
-        update_is_blocking(undefined, changes.is_also_blocking_youtube.newValue);
+        update_is_blocking(undefined, changes.is_also_blocking_youtube.newValue, undefined);
+    }
+
+    if (changes.is_also_blocking_x) {
+        update_is_blocking(undefined, undefined, changes.is_also_blocking_x.newValue);
     }
 });  

@@ -4,13 +4,11 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: #f4f6f9;
     margin: 0;
     min-width: max-content;
   }
 
   .toggle-container {
-    background: #fff;
     padding: 1.5rem 2rem;
     border-radius: 16px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
@@ -21,11 +19,26 @@ body {
     transition: all 0.3s ease;
   }
 
+  .platform-icon {
+    height: 22px;
+    width: 22px;
+    object-fit: contain;
+    margin-right: 8px;
+  }
+  
   .toggle-row {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 4px 0;
   }
+  
+  .switch {
+    margin-left: auto; /* Push the switch to the far right */
+  }
+  
 
   .toggle-label {
     font-size: 1.2rem;
@@ -76,21 +89,4 @@ body {
 
   .switch input:checked + .slider::before {
     transform: translateX(28px);
-  }
-
-  .indicator {
-    user-select: none;
-    pointer-events: none;
-    font-size: 0.85rem;
-    color: #777;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-  }
-
-  .indicator img {
-    height: 18px;
-    width: 18px;
-    object-fit: contain;
-    vertical-align: middle;
   }
