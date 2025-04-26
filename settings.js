@@ -12,10 +12,10 @@ ytbCheckBoxEl.addEventListener("input", async (e) => await chrome.storage.local.
 
 /*
 * TODO
-*   Implement additional switch specifically for youtube since it can sometimes be useful
-*   Add Youtube icon to the UI
-*   Change version to 1.1
-*   Push updates to github
+*   DONE: Implement additional switch specifically for youtube since it can sometimes be useful
+*   DONE: Add Youtube icon to the UI
+*   DONE: Change version to 1.1
+*   DONE: Push updates to github
 *   Push updates to chrome store
 *   Continue working on the android app
 */
