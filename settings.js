@@ -24,6 +24,8 @@ xCheckBoxEl.addEventListener("input", async (e) => await chrome.storage.local.se
 *   DONE: Add X Support (1.2)
 *   DONE: Redesign
 *   DONE: push to github
-*   Push updates to chrome store
+*   DONE: Push updates to chrome store
+*   ---
+*
 *   Continue working on the android app
 */

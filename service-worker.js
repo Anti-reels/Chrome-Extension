@@ -17,7 +17,7 @@ const update_is_blocking = async (is_blocking, is_also_blocking_youtube, is_also
     if (is_also_blocking_youtube == undefined) is_also_blocking_youtube = await getOldValue(false, true, false);
     if (is_also_blocking_x == undefined) is_also_blocking_x = await getOldValue(false, false, true);
     
-    console.log(getConfig(is_blocking, is_also_blocking_youtube, is_also_blocking_x).pacScript.data);
+    //console.log(getConfig(is_blocking, is_also_blocking_youtube, is_also_blocking_x).pacScript.data);
     
 
     chrome.proxy.settings.set(
@@ -25,7 +25,7 @@ const update_is_blocking = async (is_blocking, is_also_blocking_youtube, is_also
         function() {}
     );
 
-    console.log("Updated " + is_blocking + " and " + is_also_blocking_youtube + " and " + is_also_blocking_x);
+    //console.log("Updated " + is_blocking + " and " + is_also_blocking_youtube + " and " + is_also_blocking_x);
 }
 
 const getOldValue = async (is_blocking, is_also_blocking_youtube, is_also_blocking_x) => {

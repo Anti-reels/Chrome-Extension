@@ -18,7 +18,6 @@ body {
     gap: 1rem;
     transition: all 0.3s ease;
   }
-
   .platform-icon {
     height: 22px;
     width: 22px;
@@ -30,13 +29,19 @@ body {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 0.5rem;
     width: 100%;
     padding: 4px 0;
+    gap: 3rem;
+    &.ind {
+      justify-content: space-between;
+      font-size: large;
+      user-select: none;
+      pointer-events: none;
+    }
   }
   
   .switch {
-    margin-left: auto; /* Push the switch to the far right */
+    margin-left: auto;
   }
   
 
