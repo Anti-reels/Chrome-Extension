@@ -16,16 +16,13 @@ const update_is_blocking = async (is_blocking, is_also_blocking_youtube, is_also
     if (is_blocking == undefined) is_blocking = await getOldValue(true, false, false);
     if (is_also_blocking_youtube == undefined) is_also_blocking_youtube = await getOldValue(false, true, false);
     if (is_also_blocking_x == undefined) is_also_blocking_x = await getOldValue(false, false, true);
-    
-    //console.log(getConfig(is_blocking, is_also_blocking_youtube, is_also_blocking_x).pacScript.data);
-    
-
+        
     chrome.proxy.settings.set(
         { value: getConfig(is_blocking, is_also_blocking_youtube, is_also_blocking_x), scope: 'regular' },
         function() {}
     );
 
-    //console.log("Updated " + is_blocking + " and " + is_also_blocking_youtube + " and " + is_also_blocking_x);
+    
 }
 
 const getOldValue = async (is_blocking, is_also_blocking_youtube, is_also_blocking_x) => {
@@ -66,16 +63,27 @@ chrome.storage.local.get(["is_blocking", "is_also_blocking_youtube", "is_also_bl
         update_is_blocking(true, false, false);
     }
 });
+
 chrome.storage.onChanged.addListener((changes) => {
-    if (changes.is_blocking) {
-        update_is_blocking(changes.is_blocking.newValue, undefined, undefined);
-    }
-
-    if (changes.is_also_blocking_youtube) {
-        update_is_blocking(undefined, changes.is_also_blocking_youtube.newValue, undefined);
-    }
-
-    if (changes.is_also_blocking_x) {
-        update_is_blocking(undefined, undefined, changes.is_also_blocking_x.newValue);
-    }
+    if (changes.is_blocking) update_is_blocking(changes.is_blocking.newValue, undefined, undefined);
+    if (changes.is_also_blocking_youtube) update_is_blocking(undefined, changes.is_also_blocking_youtube.newValue, undefined);
+    if (changes.is_also_blocking_x) update_is_blocking(undefined, undefined, changes.is_also_blocking_x.newValue);
 });  
+
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        if(request.totalSeconds && request.initialSettings) {
+            const { totalSeconds, initialSettings } = request;
+            const { is_blocking, is_also_blocking_youtube, is_also_blocking_x } = initialSettings;
+            
+            setTimeout(() => {
+                update_is_blocking(is_blocking, is_also_blocking_youtube, is_also_blocking_x);
+                chrome.storage.local.set({ is_blocking, is_also_blocking_youtube, is_also_blocking_x });
+                chrome.runtime.sendMessage({ initialSettings });
+            }, totalSeconds * 1000);
+            sendResponse({ success: true });
+        }
+        else sendResponse({ success: false });
+    }
+);
+  

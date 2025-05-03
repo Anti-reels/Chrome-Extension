@@ -95,3 +95,54 @@ body {
   .switch input:checked + .slider::before {
     transform: translateX(28px);
   }
+
+  #start-timer {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+
+  #start-timer:hover {
+    background-color: #45a049;
+  }
+
+  #time {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+  .timer-text {
+    font-size: 1.2rem;
+    color: #333;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  hr {
+    width: 100%;
+    border: 0;
+    height: 1px;
+    background-color: #ccc;
+  }
+
+  .timer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+  }
+  .timer-container > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+  }
